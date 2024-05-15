@@ -1,0 +1,96 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model user {
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String              @unique
+  password      String
+  refresh_token String
+}
+
+
+model databarang{
+  kode_barang         String           @id @default(auto()) @map("_id") @db.ObjectId
+  nama_barang         String
+  stok                Int
+  satuan              String
+  harga               Int
+  
+  bahanbarang         bahanbarang[]
+
+  kode_transaksi      String[]           @db.ObjectId 
+  transaksikeluar    transaksikeluar[]  @relation(fields: [kode_transaksi], references: [kode_transaksi])
+  
+  createAt            DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
+
+model bahanbaku{
+  kode_bahan          String          @id @default(auto()) @map("_id") @db.ObjectId
+  nama_bahan          String
+  satuan              String
+
+  jumlah_satuan       Int
+  harga               Int
+
+  kode_barang_bahan   String[]         @db.ObjectId 
+  bahanbarang         bahanbarang[]    @relation(fields: [kode_barang_bahan], references: [kode_barang_bahan])
+
+  kode_transaksi      String[]         @db.ObjectId 
+  transaksimasuk      transaksimasuk[] @relation(fields:[kode_transaksi], references:[kode_transaksi])
+ 
+  createAt            DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+}
+
+model bahanbarang{
+  kode_barang_bahan String           @id @default(auto()) @map("_id") @db.ObjectId
+  jumlah_bahan      Int
+
+  kode_bahan        String[]         @db.ObjectId 
+  bahanbaku         bahanbaku[]      @relation(fields: [kode_bahan], references: [kode_bahan])
+  
+  kode_barang       String           @db.ObjectId
+  databarang        databarang       @relation(fields:[kode_barang], references:[kode_barang])
+  
+  createAt          DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model transaksikeluar {
+  kode_transaksi    String @id @default(auto()) @map("_id") @db.ObjectId
+
+  jumlah            Int
+  harga             Int 
+  no_struk          String @unique @default(uuid()) 
+  kode_kasir        String @db.ObjectId
+
+  kode_barang       String[]      @db.ObjectId 
+  databarang        databarang[]  @relation(fields: [kode_barang], references: [kode_barang])
+  
+  createAt          DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model transaksimasuk {
+  kode_transaksi    String      @id @default(auto()) @map("_id") @db.ObjectId
+  
+  jumlah            Int
+  harga             Int 
+  no_struk          String      @unique @default(uuid()) 
+  kode_kasir        String      @db.ObjectId
+
+  kode_bahan        String[]    @db.ObjectId
+  bahanbaku         bahanbaku[] @relation(fields:[kode_bahan], references:[kode_bahan])
+  
+  createAt          DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
