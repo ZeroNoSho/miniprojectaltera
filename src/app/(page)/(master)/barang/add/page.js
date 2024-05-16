@@ -6,7 +6,8 @@ import { useState, useContext } from "react";
 axios.defaults.withCredentials = true;
 
 export default function Home() {
-  const { token, bahan, router, mutatebarang } = useContext(Contex);
+  const { token, bahan, router, mutatebarang, mutatebahan } =
+    useContext(Contex);
   const [harga, setHarga] = useState();
   const [nama, setNama] = useState();
   const [stock, setStock] = useState();
@@ -38,7 +39,8 @@ export default function Home() {
     setStock("");
     setHarga("");
 
-    mutatebarang("/api/databarang/get/");
+    mutatebahan(`/api/bahanbaku/get/`, token);
+    mutatebarang("/api/databarang/get/", token);
     router.push(`/barang`);
   };
 

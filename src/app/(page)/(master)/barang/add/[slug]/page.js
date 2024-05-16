@@ -8,7 +8,8 @@ axios.defaults.withCredentials = true;
 
 export default function Home() {
   const params = useParams();
-  const { token, bahan, router, mutatebarang } = useContext(Contex);
+  const { token, bahan, router, mutatebarang, mutatebahan } =
+    useContext(Contex);
   const [harga, setHarga] = useState();
   const [nama, setNama] = useState();
   const [stock, setStock] = useState();
@@ -59,6 +60,7 @@ export default function Home() {
         setHarga("");
         setJenisValue(false);
 
+        mutatebahan(`/api/bahanbaku/get/`);
         mutatebarang("/api/databarang/get/");
         router.push(`/barang`);
       })

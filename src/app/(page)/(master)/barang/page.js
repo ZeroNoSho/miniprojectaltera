@@ -9,7 +9,7 @@ import Link from "next/link";
 axios.defaults.withCredentials = true;
 
 export default function Home() {
-  const { barang, setBarangnanme, col, token, mutatebarang } =
+  const { barang, setBarangnanme, col, token, mutatebarang, mutatebahan } =
     useContext(Contex);
   const [chkbox1, setChkbox1] = useState(true);
   const [chkbox2, setChkbox2] = useState(true);
@@ -26,9 +26,8 @@ export default function Home() {
         Authorization: `Bearer ${token}`,
       },
     });
-
-    mutatebarang("/api/databarang/get/");
-    console.log(res.data);
+    mutatebahan(`/api/bahanbaku/get/`, token);
+    mutatebarang("/api/databarang/get/", token);
   };
 
   return (

@@ -9,7 +9,7 @@ import Link from "next/link";
 axios.defaults.withCredentials = true;
 
 export default function Home() {
-  const { bahan, setBahananme, col, token } = useContext(Contex);
+  const { bahan, setBahananme, col, token, mutatebahan } = useContext(Contex);
   const [chkbox1, setChkbox1] = useState(true);
   const [chkbox2, setChkbox2] = useState(true);
   const [chkbox3, setChkbox3] = useState(true);
@@ -23,6 +23,7 @@ export default function Home() {
         Authorization: `Bearer ${token}`,
       },
     });
+    mutatebahan(`/api/bahanbaku/get/`);
     console.log(res.data);
   };
 

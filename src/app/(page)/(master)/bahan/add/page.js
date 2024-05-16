@@ -30,7 +30,7 @@ export default function Home() {
       }
     );
 
-    mutatebahan("/api/bahanbaku/get/");
+    mutatebahan(`/api/bahanbaku/get/`);
     router.push(`/bahan`);
 
     setNama("");
