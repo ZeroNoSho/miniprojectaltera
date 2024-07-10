@@ -10,9 +10,7 @@ export default function Produksi() {
 
   const dataChat = async () => {
     await axios
-      .post(`/api/ai`, {
-        Text: chat,
-      })
+      .get(`/api/ai/${chat}`)
       .then((res) => {
         const datas = [...data, chat, res.data.ai];
         setData(datas);
